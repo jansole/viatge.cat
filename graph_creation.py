@@ -62,6 +62,7 @@ for node1, node2 in combinations(G.nodes, 2):  #totes les combinacions possibles
         fnt += 1
 
 G.add_edge('Puigcerdà', 'Llívia') # Sino el graf ens quedava separat en dues components connexes. És el que té més sentit
+fnt += 1
 print("Nombre d'arestes (fronteres):", fnt)
 
 pos = {node: (data['x'], data['y']) for node, data in G.nodes(data=True)}
