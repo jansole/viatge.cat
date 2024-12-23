@@ -7,4 +7,4 @@ Semblant al joc travle.earth, vull emprar els meus coneixements de grafs per a f
 https://datos.gob.es/ca/catalogo/a09002970-municipios-de-catalunya-geo
 
 - Fronteres (arestes):
-https://municat.gencat.cat/ca/Temes/El-mapa-municipal/mapa_municipal/limits-de-terme-oficials/
+Calculades amb els jsons de https://www.icgc.cat/ca/Geoinformacio-i-mapes/Dades-i-productes/Geoinformacio-cartografica/Divisions-administratives
