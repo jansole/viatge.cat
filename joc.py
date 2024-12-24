@@ -24,7 +24,7 @@ random.shuffle(comarques)
 inici, desti, camins = fj.generacio_inici_desti(G, comarques) # generació de cami
 cami = [inici, desti] #cami que omplirà l'usuari
 
-minim_torns = len(camins[0])-2
+minim_torns = len(camins[0])
 torns_totals = math.ceil(minim_torns * K)
 
 torns = 0
