@@ -15,7 +15,7 @@ import funcions_joc as fj
 import math
 
 ### CALAIX DE LES CONSTANTS
-K = 1.2
+K = 1.25
 G = nx.read_graphml('./grafs/comarques.graphml')
 comarques = list(G.nodes()) # agafem les comarques i desordenem
 
@@ -28,17 +28,20 @@ minim_torns = len(camins[0])
 torns_totals = math.ceil(minim_torns * K)
 
 torns = 0
+inputs = []
 while not fj.solucio_trobada(cami, camins) and torns < torns_totals: # mentre no trobi la solució i porti menys torns que el total
     print(f'Torn {torns} de {torns_totals}:')
     inp = input('Introdueix una comarca: ')
     print('\n')
     if inp in comarques and inp not in cami:
         cami.append(inp)
+        inputs.append(inp + fj.calcul_proximitat(G, inp, camins))
         torns +=1
+    print(inputs)
 
 if fj.solucio_trobada(cami, camins):
     print('Has trobat la solució!')
-    print(f"Llargada mínima: {minim_torns} - El teu intent: {torns}")
+    print(f"Llargada mínima: {minim_torns-2} - El teu intent: {torns}")
 else: print('Has fallat :(')
 
 

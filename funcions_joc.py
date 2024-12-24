@@ -49,3 +49,16 @@ def solucio_trobada(cami, camins):
             return True
     
     return False
+
+
+def calcul_proximitat(G, inp, camins):
+    groc = False # fem aixo per si troba que es vei d'un cami, que no faci groc directe pq potser es verd
+    
+    for cami in camins:
+        if inp in cami:
+            return ' 🟩' #si es cami, verd
+        for node in cami[1:-1]:
+            if inp in G.neighbors(node):
+                groc = True
+    if groc: return ' 🟨'
+    return ' 🟥' #si no hi és enlloc, vermell
