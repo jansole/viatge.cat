@@ -24,26 +24,22 @@ random.shuffle(comarques)
 inici, desti, camins = fj.generacio_inici_desti(G, comarques) # generació de cami
 cami = [inici, desti] #cami que omplirà l'usuari
 
-minim_torns = len(camins[0])
+minim_torns = len(camins[0])-2
 torns_totals = math.ceil(minim_torns * K)
 
 torns = 0
+inputs = []
 while not fj.solucio_trobada(cami, camins) and torns < torns_totals: # mentre no trobi la solució i porti menys torns que el total
+    print(inputs if inputs is not [] else "!!!")
     print(f'Torn {torns} de {torns_totals}:')
     inp = input('Introdueix una comarca: ')
     print('\n')
     if inp in comarques and inp not in cami:
         cami.append(inp)
+        inputs.append(inp)
         torns +=1
 
 if fj.solucio_trobada(cami, camins):
     print('Has trobat la solució!')
     print(f"Llargada mínima: {minim_torns} - El teu intent: {torns}")
 else: print('Has fallat :(')
-
-
-
-
-
-
-
