@@ -1,0 +1,409 @@
+<?xml version='1.0' encoding='utf-8'?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd"><key id="d4" for="node" attr.name="area" attr.type="double"/>
+<key id="d3" for="node" attr.name="capital" attr.type="string"/>
+<key id="d2" for="node" attr.name="codi" attr.type="string"/>
+<key id="d1" for="node" attr.name="y" attr.type="double"/>
+<key id="d0" for="node" attr.name="x" attr.type="double"/>
+<graph edgedefault="undirected"><node id="Alt Camp">
+  <data key="d0">654.2857894760385</data>
+  <data key="d1">20664.078052535104</data>
+  <data key="d2">01</data>
+  <data key="d3">Valls</data>
+  <data key="d4">537.8597</data>
+</node>
+<node id="Alt Empordà">
+  <data key="d0">1476.8240482884758</data>
+  <data key="d1">21152.36527635261</data>
+  <data key="d2">02</data>
+  <data key="d3">Figueres</data>
+  <data key="d4">1356.907</data>
+</node>
+<node id="Alt Penedès">
+  <data key="d0">848.5034548058622</data>
+  <data key="d1">20693.90258289803</data>
+  <data key="d2">03</data>
+  <data key="d3">Vilafranca del Penedès</data>
+  <data key="d4">592.5548</data>
+</node>
+<node id="Alt Urgell">
+  <data key="d0">691.9489301829681</data>
+  <data key="d1">21136.446635036453</data>
+  <data key="d2">04</data>
+  <data key="d3">la Seu d'Urgell</data>
+  <data key="d4">1446.6689</data>
+</node>
+<node id="Alta Ribagorça">
+  <data key="d0">411.8827217879293</data>
+  <data key="d1">21243.425698523835</data>
+  <data key="d2">05</data>
+  <data key="d3">el Pont de Suert</data>
+  <data key="d4">427.2234</data>
+</node>
+<node id="Anoia">
+  <data key="d0">791.4818403546217</data>
+  <data key="d1">20799.05302259567</data>
+  <data key="d2">06</data>
+  <data key="d3">Igualada</data>
+  <data key="d4">867.0471</data>
+</node>
+<node id="Bages">
+  <data key="d0">902.7966458443509</data>
+  <data key="d1">20892.863359708255</data>
+  <data key="d2">07</data>
+  <data key="d3">Manresa</data>
+  <data key="d4">1092.7982</data>
+</node>
+<node id="Baix Camp">
+  <data key="d0">492.14913764559975</data>
+  <data key="d1">20569.105313593554</data>
+  <data key="d2">08</data>
+  <data key="d3">Reus</data>
+  <data key="d4">696.448</data>
+</node>
+<node id="Baix Ebre">
+  <data key="d0">280.6997395737039</data>
+  <data key="d1">20420.199112827147</data>
+  <data key="d2">09</data>
+  <data key="d3">Tortosa</data>
+  <data key="d4">1001.9331</data>
+</node>
+<node id="Baix Empordà">
+  <data key="d0">1532.5746660480768</data>
+  <data key="d1">20978.739001812042</data>
+  <data key="d2">10</data>
+  <data key="d3">la Bisbal d'Empordà</data>
+  <data key="d4">701.1957</data>
+</node>
+<node id="Baix Llobregat">
+  <data key="d0">981.0645559420876</data>
+  <data key="d1">20698.66458455939</data>
+  <data key="d2">11</data>
+  <data key="d3">Sant Feliu de Llobregat</data>
+  <data key="d4">487.5585</data>
+</node>
+<node id="Baix Penedès">
+  <data key="d0">758.1453802785212</data>
+  <data key="d1">20634.03142515604</data>
+  <data key="d2">12</data>
+  <data key="d3">el Vendrell</data>
+  <data key="d4">296.4281</data>
+</node>
+<node id="Barcelonès">
+  <data key="d0">1082.1883366443976</data>
+  <data key="d1">20704.193703798577</data>
+  <data key="d2">13</data>
+  <data key="d3">Barcelona</data>
+  <data key="d4">146.3623</data>
+</node>
+<node id="Berguedà">
+  <data key="d0">925.0553266275496</data>
+  <data key="d1">21062.17199687275</data>
+  <data key="d2">14</data>
+  <data key="d3">Berga</data>
+  <data key="d4">1185.2257</data>
+</node>
+<node id="Cerdanya">
+  <data key="d0">895.510576638885</data>
+  <data key="d1">21196.093223034306</data>
+  <data key="d2">15</data>
+  <data key="d3">Puigcerdà</data>
+  <data key="d4">546.3461</data>
+</node>
+<node id="Conca de Barberà">
+  <data key="d0">603.5312206503894</data>
+  <data key="d1">20721.5308943565</data>
+  <data key="d2">16</data>
+  <data key="d3">Montblanc</data>
+  <data key="d4">650.3631</data>
+</node>
+<node id="Garraf">
+  <data key="d0">888.8793164998586</data>
+  <data key="d1">20631.109094557614</data>
+  <data key="d2">17</data>
+  <data key="d3">Vilanova i la Geltrú</data>
+  <data key="d4">185.2958</data>
+</node>
+<node id="Garrigues">
+  <data key="d0">410.2707241579974</data>
+  <data key="d1">20719.15290254195</data>
+  <data key="d2">18</data>
+  <data key="d3">les Borges Blanques</data>
+  <data key="d4">797.2156</data>
+</node>
+<node id="Garrotxa">
+  <data key="d0">1272.0147545199527</data>
+  <data key="d1">21091.468280213117</data>
+  <data key="d2">19</data>
+  <data key="d3">Olot</data>
+  <data key="d4">733.3302</data>
+</node>
+<node id="Gironès">
+  <data key="d0">1415.9685877161414</data>
+  <data key="d1">20983.076448513613</data>
+  <data key="d2">20</data>
+  <data key="d3">Girona</data>
+  <data key="d4">575.9353</data>
+</node>
+<node id="Maresme">
+  <data key="d0">1267.1556730174757</data>
+  <data key="d1">20803.888443698415</data>
+  <data key="d2">21</data>
+  <data key="d3">Mataró</data>
+  <data key="d4">397.918</data>
+</node>
+<node id="Montsià">
+  <data key="d0">247.81659951851856</data>
+  <data key="d1">20333.171095421556</data>
+  <data key="d2">22</data>
+  <data key="d3">Amposta</data>
+  <data key="d4">733.9884</data>
+</node>
+<node id="Noguera">
+  <data key="d0">458.4966172046997</data>
+  <data key="d1">20948.92283718923</data>
+  <data key="d2">23</data>
+  <data key="d3">Balaguer</data>
+  <data key="d4">1783.3727</data>
+</node>
+<node id="Osona">
+  <data key="d0">1146.469835920965</data>
+  <data key="d1">20981.579320269095</data>
+  <data key="d2">24</data>
+  <data key="d3">Vic</data>
+  <data key="d4">1020.4317</data>
+</node>
+<node id="Pallars Jussà">
+  <data key="d0">462.45676553820107</data>
+  <data key="d1">21110.89038143206</data>
+  <data key="d2">25</data>
+  <data key="d3">Tremp</data>
+  <data key="d4">1343.6555</data>
+</node>
+<node id="Pallars Sobirà">
+  <data key="d0">584.0760246270768</data>
+  <data key="d1">21271.178659949823</data>
+  <data key="d2">26</data>
+  <data key="d3">Sort</data>
+  <data key="d4">1378.6279</data>
+</node>
+<node id="Pla d'Urgell">
+  <data key="d0">436.3908666000525</data>
+  <data key="d1">20823.64671146049</data>
+  <data key="d2">27</data>
+  <data key="d3">Mollerussa</data>
+  <data key="d4">305.4285</data>
+</node>
+<node id="Pla de l'Estany">
+  <data key="d0">1393.2236459861247</data>
+  <data key="d1">21062.779405162975</data>
+  <data key="d2">28</data>
+  <data key="d3">Banyoles</data>
+  <data key="d4">263.3198</data>
+</node>
+<node id="Priorat">
+  <data key="d0">405.3452063694689</data>
+  <data key="d1">20609.906860704123</data>
+  <data key="d2">29</data>
+  <data key="d3">Falset</data>
+  <data key="d4">498.0762</data>
+</node>
+<node id="Ribera d'Ebre">
+  <data key="d0">308.2248061986696</data>
+  <data key="d1">20566.340878358973</data>
+  <data key="d2">30</data>
+  <data key="d3">Móra d'Ebre</data>
+  <data key="d4">827.6093</data>
+</node>
+<node id="Ripollès">
+  <data key="d0">1113.5356612810651</data>
+  <data key="d1">21141.761853242664</data>
+  <data key="d2">31</data>
+  <data key="d3">Ripoll</data>
+  <data key="d4">956.8699</data>
+</node>
+<node id="Segarra">
+  <data key="d0">647.4152005053995</data>
+  <data key="d1">20855.465478793587</data>
+  <data key="d2">32</data>
+  <data key="d3">Cervera</data>
+  <data key="d4">564.1977</data>
+</node>
+<node id="Segrià">
+  <data key="d0">265.8428873896755</data>
+  <data key="d1">20781.20846831209</data>
+  <data key="d2">33</data>
+  <data key="d3">Lleida</data>
+  <data key="d4">1395.9986</data>
+</node>
+<node id="Selva">
+  <data key="d0">1325.442949499039</data>
+  <data key="d1">20921.771145107512</data>
+  <data key="d2">34</data>
+  <data key="d3">Santa Coloma de Farners</data>
+  <data key="d4">994.0428</data>
+</node>
+<node id="Solsonès">
+  <data key="d0">752.7714208408726</data>
+  <data key="d1">20996.28463879923</data>
+  <data key="d2">35</data>
+  <data key="d3">Solsona</data>
+  <data key="d4">1159.5949</data>
+</node>
+<node id="Tarragonès">
+  <data key="d0">642.2429107818705</data>
+  <data key="d1">20581.95938007451</data>
+  <data key="d2">36</data>
+  <data key="d3">Tarragona</data>
+  <data key="d4">320.5802</data>
+</node>
+<node id="Terra Alta">
+  <data key="d0">186.20037975788335</data>
+  <data key="d1">20527.264491245063</data>
+  <data key="d2">37</data>
+  <data key="d3">Gandesa</data>
+  <data key="d4">742.6641</data>
+</node>
+<node id="Urgell">
+  <data key="d0">543.3986459489956</data>
+  <data key="d1">20822.892991877015</data>
+  <data key="d2">38</data>
+  <data key="d3">Tàrrega</data>
+  <data key="d4">578.2949</data>
+</node>
+<node id="Val d'Aran">
+  <data key="d0">414.1121866864917</data>
+  <data key="d1">21362.92598010269</data>
+  <data key="d2">39</data>
+  <data key="d3">Vielha</data>
+  <data key="d4">633.0597</data>
+</node>
+<node id="Vallès Occidental">
+  <data key="d0">1026.2064591452295</data>
+  <data key="d1">20782.446210792605</data>
+  <data key="d2">40</data>
+  <data key="d3">Sabadell / Terrassa</data>
+  <data key="d4">583.084</data>
+</node>
+<node id="Vallès Oriental">
+  <data key="d0">1170.5118667242468</data>
+  <data key="d1">20833.413188723895</data>
+  <data key="d2">41</data>
+  <data key="d3">Granollers</data>
+  <data key="d4">735.2355</data>
+</node>
+<node id="Moianès">
+  <data key="d0">1041.8166601036596</data>
+  <data key="d1">20899.0341681603</data>
+  <data key="d2">42</data>
+  <data key="d3">Moià</data>
+  <data key="d4">337.2896</data>
+</node>
+<node id="Lluçanès">
+  <data key="d0">1038.3126950575938</data>
+  <data key="d1">21007.97368071901</data>
+  <data key="d2">43</data>
+  <data key="d3">Prats de Lluçanès</data>
+  <data key="d4">226.5485</data>
+</node>
+<edge source="Alt Camp" target="Alt Penedès"/>
+<edge source="Alt Camp" target="Anoia"/>
+<edge source="Alt Camp" target="Baix Camp"/>
+<edge source="Alt Camp" target="Baix Penedès"/>
+<edge source="Alt Camp" target="Conca de Barberà"/>
+<edge source="Alt Camp" target="Tarragonès"/>
+<edge source="Alt Empordà" target="Baix Empordà"/>
+<edge source="Alt Empordà" target="Garrotxa"/>
+<edge source="Alt Empordà" target="Gironès"/>
+<edge source="Alt Empordà" target="Pla de l'Estany"/>
+<edge source="Alt Penedès" target="Anoia"/>
+<edge source="Alt Penedès" target="Baix Llobregat"/>
+<edge source="Alt Penedès" target="Baix Penedès"/>
+<edge source="Alt Penedès" target="Garraf"/>
+<edge source="Alt Urgell" target="Berguedà"/>
+<edge source="Alt Urgell" target="Cerdanya"/>
+<edge source="Alt Urgell" target="Noguera"/>
+<edge source="Alt Urgell" target="Pallars Jussà"/>
+<edge source="Alt Urgell" target="Pallars Sobirà"/>
+<edge source="Alt Urgell" target="Solsonès"/>
+<edge source="Alta Ribagorça" target="Pallars Jussà"/>
+<edge source="Alta Ribagorça" target="Pallars Sobirà"/>
+<edge source="Alta Ribagorça" target="Val d'Aran"/>
+<edge source="Anoia" target="Bages"/>
+<edge source="Anoia" target="Baix Llobregat"/>
+<edge source="Anoia" target="Conca de Barberà"/>
+<edge source="Anoia" target="Segarra"/>
+<edge source="Anoia" target="Solsonès"/>
+<edge source="Bages" target="Baix Llobregat"/>
+<edge source="Bages" target="Berguedà"/>
+<edge source="Bages" target="Solsonès"/>
+<edge source="Bages" target="Vallès Occidental"/>
+<edge source="Bages" target="Moianès"/>
+<edge source="Bages" target="Lluçanès"/>
+<edge source="Baix Camp" target="Baix Ebre"/>
+<edge source="Baix Camp" target="Conca de Barberà"/>
+<edge source="Baix Camp" target="Priorat"/>
+<edge source="Baix Camp" target="Ribera d'Ebre"/>
+<edge source="Baix Camp" target="Tarragonès"/>
+<edge source="Baix Ebre" target="Montsià"/>
+<edge source="Baix Ebre" target="Ribera d'Ebre"/>
+<edge source="Baix Ebre" target="Terra Alta"/>
+<edge source="Baix Empordà" target="Gironès"/>
+<edge source="Baix Empordà" target="Selva"/>
+<edge source="Baix Llobregat" target="Barcelonès"/>
+<edge source="Baix Llobregat" target="Garraf"/>
+<edge source="Baix Llobregat" target="Vallès Occidental"/>
+<edge source="Baix Penedès" target="Garraf"/>
+<edge source="Baix Penedès" target="Tarragonès"/>
+<edge source="Barcelonès" target="Maresme"/>
+<edge source="Barcelonès" target="Vallès Occidental"/>
+<edge source="Barcelonès" target="Vallès Oriental"/>
+<edge source="Berguedà" target="Cerdanya"/>
+<edge source="Berguedà" target="Ripollès"/>
+<edge source="Berguedà" target="Solsonès"/>
+<edge source="Berguedà" target="Lluçanès"/>
+<edge source="Cerdanya" target="Ripollès"/>
+<edge source="Conca de Barberà" target="Garrigues"/>
+<edge source="Conca de Barberà" target="Priorat"/>
+<edge source="Conca de Barberà" target="Segarra"/>
+<edge source="Conca de Barberà" target="Urgell"/>
+<edge source="Garrigues" target="Pla d'Urgell"/>
+<edge source="Garrigues" target="Priorat"/>
+<edge source="Garrigues" target="Ribera d'Ebre"/>
+<edge source="Garrigues" target="Segrià"/>
+<edge source="Garrigues" target="Urgell"/>
+<edge source="Garrotxa" target="Gironès"/>
+<edge source="Garrotxa" target="Osona"/>
+<edge source="Garrotxa" target="Pla de l'Estany"/>
+<edge source="Garrotxa" target="Ripollès"/>
+<edge source="Garrotxa" target="Selva"/>
+<edge source="Gironès" target="Pla de l'Estany"/>
+<edge source="Gironès" target="Selva"/>
+<edge source="Maresme" target="Selva"/>
+<edge source="Maresme" target="Vallès Oriental"/>
+<edge source="Noguera" target="Pallars Jussà"/>
+<edge source="Noguera" target="Pla d'Urgell"/>
+<edge source="Noguera" target="Segarra"/>
+<edge source="Noguera" target="Segrià"/>
+<edge source="Noguera" target="Solsonès"/>
+<edge source="Noguera" target="Urgell"/>
+<edge source="Osona" target="Ripollès"/>
+<edge source="Osona" target="Selva"/>
+<edge source="Osona" target="Vallès Oriental"/>
+<edge source="Osona" target="Moianès"/>
+<edge source="Osona" target="Lluçanès"/>
+<edge source="Pallars Jussà" target="Pallars Sobirà"/>
+<edge source="Pallars Sobirà" target="Val d'Aran"/>
+<edge source="Pla d'Urgell" target="Segrià"/>
+<edge source="Pla d'Urgell" target="Urgell"/>
+<edge source="Priorat" target="Ribera d'Ebre"/>
+<edge source="Ribera d'Ebre" target="Segrià"/>
+<edge source="Ribera d'Ebre" target="Terra Alta"/>
+<edge source="Ripollès" target="Lluçanès"/>
+<edge source="Segarra" target="Solsonès"/>
+<edge source="Segarra" target="Urgell"/>
+<edge source="Selva" target="Vallès Oriental"/>
+<edge source="Vallès Occidental" target="Vallès Oriental"/>
+<edge source="Vallès Occidental" target="Moianès"/>
+<edge source="Vallès Oriental" target="Moianès"/>
+<edge source="Moianès" target="Lluçanès"/>
+</graph></graphml>
