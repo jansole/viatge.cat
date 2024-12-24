@@ -25,12 +25,11 @@ inici, desti, camins = fj.generacio_inici_desti(G, comarques) # generació de ca
 cami = [inici, desti] #cami que omplirà l'usuari
 
 minim_torns = len(camins[0])
-torns_totals = math.ceil(minim_torns * K)
+torns_totals = math.ceil(minim_torns * K + 1)
 
 torns = 0
 inputs = []
 while not fj.solucio_trobada(cami, camins) and torns < torns_totals: # mentre no trobi la solució i porti menys torns que el total
-    print(inputs if inputs is not [] else "!!!")
     print(f'Torn {torns} de {torns_totals}:')
     inp = input('Introdueix una comarca: ')
     print('\n')
