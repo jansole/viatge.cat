@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>viatge.cat 🗺</title>
+  <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+  <style>
+    #map { height: 90vh; margin: 20px auto; }
+    body { font-family: Helvetica, sans-serif; text-align: center; }
+    .input-container { margin-top: 10px; position: relative; }
+    #suggestionsList {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      background: #fff;
+      border: 1px solid #ddd;
+      max-height: 150px;
+      overflow-y: auto;
+      position: absolute;
+      width: 200px;
+      display: none;
+    }
+    #suggestionsList li {
+      padding: 8px;
+      cursor: pointer;
+    }
+    #suggestionsList li:hover {
+      background-color: #f0f0f0;
+    }
+  </style>
+</head>
+<body>
+  <h1></h1>
+  <div id="map"></div>
+  <div class="input-container">
+    <!-- Input amb Datalist -->
+    <input type="text" id="comarcaInput" placeholder="Introdueix una comarca..." list="comarquesList" />
+    <datalist id="comarquesList"></datalist>
+    <button onclick="processInput()">Endevinar</button>
+    <span id="turnCounter"></span>
+  </div>
+
+  <script>
+    let geoLayer;
+    let encerts = [];
+    let torns = 0;
+    let tornsTotals = 0;
+
+    // Inicialitzar el mapa
+    const map = L.map('map').setView([41.8, 1.8], 8);
+    L.tileLayer('https://maps.geoapify.com/v1/tile/dark-matter/{z}/{x}/{y}.png', { minZoom: 8, maxZoom: 15 }).addTo(map);
+
+    // Obtenir les dades inicials del joc
+    fetch('/init')
+      .then(res => res.json())
+      .then(data => {
+        const geojson = data.geojson;
+        torns = data.torns;
+        tornsTotals = data.torns_totals;
+        document.querySelector('h1').textContent = `Vull anar des de ${data.inici} fins a ${data.desti}...`;
+        document.getElementById('turnCounter').textContent = `Torns: ${torns}/${tornsTotals}`;
+        geoLayer = L.geoJSON(geojson, {
+          style: feature => ({
+            color: "gray",
+            fillColor: "lightgray",
+            fillOpacity: 0,
+          }),
+          onEachFeature: (feature, layer) => {
+            const comarca = feature.properties.NOMCOMAR;
+            layer.bindPopup(comarca);
+          },
+        }).addTo(map);
+
+        geoLayer.eachLayer(layer => {
+          const comarca = layer.feature.properties.NOMCOMAR;
+          if ([data.inici, data.desti].includes(comarca)) {
+            layer.setStyle({ color: "blue", fillColor: "blue", fillOpacity: 0.8 });
+          }
+        });
+
+        encerts.push(data.inici, data.desti);
+
+        // Afegir comarques al datalist
+        const comarquesList = document.getElementById('comarquesList');
+        data.comarques.forEach(comarca => {
+          const option = document.createElement('option');
+          option.value = comarca;
+          comarquesList.appendChild(option);
+        });
+      });
+
+    // Funció per gestionar l'input de l'usuari
+    function processInput() {
+      const input = document.getElementById('comarcaInput').value.trim();
+      if (!input) {
+        alert('Si us plau, introdueix una comarca.');
+        return;
+      }
+
+      // Enviar l'input al backend per validar
+      fetch('/guess', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ comarca: input })
+      })
+        .then(res => res.json())
+        .then(response => {
+          torns = response.torns;  // Actualització dels torns des de la resposta
+          tornsTotals = response.torns_totals;
+          document.getElementById('turnCounter').textContent = `Torns: ${torns}/${tornsTotals}`;
+
+          if (response.success) {
+            if (response.color === 'g'){
+              geoLayer.eachLayer(layer => {
+              if (layer.feature.properties.NOMCOMAR === input) {
+                layer.setStyle({ color: "green", fillColor: "green", fillOpacity: 0.8 });
+              }
+            });
+            }
+            else if (response.color === 'y'){
+              geoLayer.eachLayer(layer => {
+              if (layer.feature.properties.NOMCOMAR === input) {
+                layer.setStyle({ color: "yellow", fillColor: "yellow", fillOpacity: 0.8 });
+              }
+            });
+            } else {
+              geoLayer.eachLayer(layer => {
+              if (layer.feature.properties.NOMCOMAR === input) {
+                layer.setStyle({ color: "red", fillColor: "red", fillOpacity: 0.8 });
+              }
+            });
+            }
+            
+            if (response.finalitzat) {
+                document.getElementById('turnCounter').textContent = `Has guanyat! 🎉`
+                alert(`Ben jugat! Has encertat el camí amb ${torns} torns!`);
+            }
+            encerts.push(input);
+            torns.push(response.torns)
+            
+          } else {
+            alert(response.message || 'Comarca no vàlida o ja endevinada.');
+          }
+        });
+}
+  </script>
+</body>
+</html>

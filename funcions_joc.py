@@ -36,29 +36,53 @@ def generacio_inici_desti(G, comarques, minim=3):
     return lloc1, lloc2, camins
 
 
-def solucio_trobada(cami, camins):
-    # Unió de tots els nodes presents en totes les solucions possibles
-    nodes_valids = set(node for solucio in camins for node in solucio)
+# def solucio_trobada(cami, camins):
+#     # Unió de tots els nodes presents en totes les solucions possibles
+#     nodes_valids = set(node for solucio in camins for node in solucio)
     
-    # Filtrar el camí de l'usuari per només incloure nodes vàlids
-    cami_filtrat = [node for node in cami if node in nodes_valids]
+#     # Filtrar el camí de l'usuari per només incloure nodes vàlids
+#     cami_filtrat = [node for node in cami if node in nodes_valids]
     
-    # Comprovar si alguna solució és subconjunt del camí filtrat
-    for solucio in camins:
-        if set(solucio).issubset(cami_filtrat):
-            return True
+#     # Comprovar si alguna solució és subconjunt del camí filtrat
+#     for solucio in camins:
+#         if set(solucio).issubset(cami_filtrat):
+#             return True
     
-    return False
+#     return False
+
+def solucio_trobada(cami, graf):
+    """
+    Comprova si és possible anar del node inicial al node final utilitzant únicament els nodes del camí proporcionat.
+    
+    :param cami: Llista de nodes que formen el camí proposat per l'usuari.
+    :param graf: Graf original.
+    :return: True si es pot connectar el primer i l'últim node del camí utilitzant només els nodes del camí; False altrament.
+    """
+    # Crear un subgraf que només contingui els nodes del camí
+    subgraf = graf.subgraph(cami)
+    
+    # Obtenir el primer i l'últim node del camí
+    node_inicial = cami[0]
+    node_final = cami[1]
+    
+    # Comprovar si existeix un camí entre el node inicial i el final al subgraf
+    camitrobat = nx.has_path(subgraf, node_inicial, node_final)
+    print(camitrobat)
+    return camitrobat
 
 
-def calcul_proximitat(G, inp, camins):
+def calcul_proximitat(G, inp, camins, colors=True):
     groc = False # fem aixo per si troba que es vei d'un cami, que no faci groc directe pq potser es verd
     
     for cami in camins:
         if inp in cami:
-            return ' 🟩' #si es cami, verd
+            if colors: return ' 🟩' #si es cami, verd
+            else: return 'g'
         for node in cami[1:-1]:
             if inp in G.neighbors(node):
                 groc = True
-    if groc: return ' 🟨'
+    if groc and colors: return ' 🟨'
+    elif groc and not colors: return 'y'
+    
+    if not colors: return 'r'
     return ' 🟥' #si no hi és enlloc, vermell
