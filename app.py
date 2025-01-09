@@ -14,7 +14,7 @@ with open('./fitxers/divisions-administratives-v2r1-comarques-250000-20240705.js
 
 # Variables del joc
 ### CALAIX DE LES CONSTANTS
-K = 1.25
+K = 1.33
 G = nx.read_graphml('./grafs/comarques.graphml')
 comarques = list(G.nodes()) # agafem les comarques i desordenem
 

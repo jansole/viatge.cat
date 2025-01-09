@@ -7,6 +7,7 @@
   <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
   <style>
     #map { height: 90vh; margin: 20px auto; }
     body { font-family: Helvetica, sans-serif; text-align: center; }
@@ -136,7 +137,12 @@
             
             if (response.finalitzat) {
                 document.getElementById('turnCounter').textContent = `Has guanyat! 🎉`
-                alert(`Ben jugat! Has encertat el camí amb ${torns} torns!`);
+          
+                const jsConfetti = new JSConfetti();
+                jsConfetti.addConfetti({
+                    confettiColors: ['#fcdd09', '#fcdd11', '#da121a'],
+                    confettiRadius: 8,
+                })
             }
             encerts.push(input);
             torns.push(response.torns)
