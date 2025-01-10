@@ -9,27 +9,89 @@
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
   <style>
-    #map { height: 90vh; margin: 20px auto; }
-    body { font-family: Helvetica, sans-serif; text-align: center; }
-    .input-container { margin-top: 10px; position: relative; }
+    body { 
+      font-family: system-ui, -apple-system, sans-serif;
+      text-align: center;
+      background: #0f172a;
+      color: white;
+      margin: 0;
+      padding: 20px;
+    }
+    
+    #map { 
+      width: 100%;
+      height: 70vh;
+      margin: 20px auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    }
+    
+    .input-container {
+      max-width: 500px;
+      margin: 20px auto;
+      position: relative;
+    }
+    
+    #comarcaInput {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      background: #1e293b;
+      color: white;
+      font-size: 16px;
+    }
+    
+    #comarcaInput:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+    }
+    
     #suggestionsList {
       list-style: none;
       padding: 0;
-      margin: 0;
-      background: #fff;
-      border: 1px solid #ddd;
-      max-height: 150px;
+      margin: 4px 0 0;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      max-height: 200px;
       overflow-y: auto;
       position: absolute;
-      width: 200px;
-      display: none;
+      width: 100%;
+      z-index: 1000;
     }
+    
     #suggestionsList li {
-      padding: 8px;
+      padding: 8px 16px;
       cursor: pointer;
+      transition: background-color 0.2s;
     }
+    
     #suggestionsList li:hover {
-      background-color: #f0f0f0;
+      background-color: #334155;
+    }
+    
+    .guesses-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    
+    .guess-item {
+      padding: 8px 16px;
+      border-radius: 6px;
+      color: white;
+      font-weight: 500;
+    }
+    
+    #turnCounter {
+      display: block;
+      margin-top: 12px;
+      font-size: 14px;
+      color: #94a3b8;
     }
   </style>
 </head>
@@ -37,10 +99,9 @@
   <h1></h1>
   <div id="map"></div>
   <div class="input-container">
-    <!-- Input amb Datalist -->
-    <input type="text" id="comarcaInput" placeholder="Introdueix una comarca..." list="comarquesList" />
-    <datalist id="comarquesList"></datalist>
-    <button onclick="processInput()">Endevinar</button>
+    <input type="text" id="comarcaInput" placeholder="Introdueix una comarca..." autocomplete="off" />
+    <ul id="suggestionsList" style="display: none;"></ul>
+    <div id="guesses" class="guesses-container"></div>
     <span id="turnCounter"></span>
   </div>
 
@@ -49,12 +110,14 @@
     let encerts = [];
     let torns = 0;
     let tornsTotals = 0;
+    let selectedSuggestionIndex = -1;
+    const comarcaInput = document.getElementById('comarcaInput');
+    const suggestionsList = document.getElementById('suggestionsList');
+    const guessesContainer = document.getElementById('guesses');
 
-    // Inicialitzar el mapa
-    const map = L.map('map').setView([41.8, 1.8], 8);
-    L.tileLayer('https://maps.geoapify.com/v1/tile/dark-matter/{z}/{x}/{y}.png', { minZoom: 8, maxZoom: 15 }).addTo(map);
+    const map = L.map('map').setView([41.8, 1.8], 7);
+    L.tileLayer('https://maps.geoapify.com/v1/tile/dark-matter/{z}/{x}/{y}.png', { minZoom: 6.5, maxZoom: 8.5 }).addTo(map);
 
-    // Obtenir les dades inicials del joc
     fetch('/init')
       .then(res => res.json())
       .then(data => {
@@ -63,15 +126,15 @@
         tornsTotals = data.torns_totals;
         document.querySelector('h1').textContent = `Vull anar des de ${data.inici} fins a ${data.desti}...`;
         document.getElementById('turnCounter').textContent = `Torns: ${torns}/${tornsTotals}`;
+        
         geoLayer = L.geoJSON(geojson, {
           style: feature => ({
-            color: "gray",
+            color: "lightgray",
             fillColor: "lightgray",
             fillOpacity: 0,
           }),
           onEachFeature: (feature, layer) => {
-            const comarca = feature.properties.NOMCOMAR;
-            layer.bindPopup(comarca);
+            layer.bindPopup(feature.properties.NOMCOMAR);
           },
         }).addTo(map);
 
@@ -79,29 +142,86 @@
           const comarca = layer.feature.properties.NOMCOMAR;
           if ([data.inici, data.desti].includes(comarca)) {
             layer.setStyle({ color: "blue", fillColor: "blue", fillOpacity: 0.8 });
+            addGuessToHistory(comarca, 'blue');
           }
         });
 
         encerts.push(data.inici, data.desti);
-
-        // Afegir comarques al datalist
-        const comarquesList = document.getElementById('comarquesList');
-        data.comarques.forEach(comarca => {
-          const option = document.createElement('option');
-          option.value = comarca;
-          comarquesList.appendChild(option);
-        });
       });
 
-    // Funció per gestionar l'input de l'usuari
-    function processInput() {
-      const input = document.getElementById('comarcaInput').value.trim();
-      if (!input) {
-        alert('Si us plau, introdueix una comarca.');
-        return;
+    comarcaInput.addEventListener('input', function() {
+      const value = this.value.trim();
+      selectedSuggestionIndex = -1;
+      if (value.length >= 3) {
+        fetch(`/suggestions?query=${encodeURIComponent(value)}`)
+          .then(res => res.json())
+          .then(suggestions => {
+            suggestionsList.innerHTML = '';
+            suggestions.forEach(comarca => {
+              const li = document.createElement('li');
+              li.textContent = comarca;
+              li.onclick = () => selectSuggestion(comarca);
+              suggestionsList.appendChild(li);
+            });
+            suggestionsList.style.display = suggestions.length ? 'block' : 'none';
+          });
+      } else {
+        suggestionsList.style.display = 'none';
       }
+    });
 
-      // Enviar l'input al backend per validar
+    comarcaInput.addEventListener('keydown', function(e) {
+      const suggestions = suggestionsList.getElementsByTagName('li');
+      
+      switch(e.key) {
+        case 'ArrowDown':
+          e.preventDefault();
+          selectedSuggestionIndex = Math.min(selectedSuggestionIndex + 1, suggestions.length - 1);
+          highlightSuggestion(suggestions);
+          break;
+        case 'ArrowUp':
+          e.preventDefault();
+          selectedSuggestionIndex = Math.max(selectedSuggestionIndex - 1, -1);
+          highlightSuggestion(suggestions);
+          break;
+        case 'Enter':
+          e.preventDefault();
+          if (selectedSuggestionIndex >= 0 && suggestions[selectedSuggestionIndex]) {
+            selectSuggestion(suggestions[selectedSuggestionIndex].textContent);
+          } else if (this.value.trim()) {
+            processInput();
+          }
+          break;
+      }
+    });
+
+    function highlightSuggestion(suggestions) {
+      Array.from(suggestions).forEach((li, index) => {
+        li.style.backgroundColor = index === selectedSuggestionIndex ? '#334155' : '';
+      });
+      if (selectedSuggestionIndex >= 0) {
+        comarcaInput.value = suggestions[selectedSuggestionIndex].textContent;
+      }
+    }
+
+    function selectSuggestion(comarca) {
+      comarcaInput.value = comarca;
+      suggestionsList.style.display = 'none';
+      processInput();
+    }
+
+    function addGuessToHistory(comarca, color) {
+      const guessElement = document.createElement('div');
+      guessElement.className = 'guess-item';
+      guessElement.textContent = comarca;
+      guessElement.style.backgroundColor = color;
+      guessesContainer.appendChild(guessElement);
+    }
+
+    function processInput() {
+      const input = comarcaInput.value.trim();
+      if (!input) return;
+
       fetch('/guess', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -109,49 +229,44 @@
       })
         .then(res => res.json())
         .then(response => {
-          torns = response.torns;  // Actualització dels torns des de la resposta
+          torns = response.torns;
           tornsTotals = response.torns_totals;
           document.getElementById('turnCounter').textContent = `Torns: ${torns}/${tornsTotals}`;
 
           if (response.success) {
-            if (response.color === 'g'){
-              geoLayer.eachLayer(layer => {
-              if (layer.feature.properties.NOMCOMAR === input) {
-                layer.setStyle({ color: "green", fillColor: "green", fillOpacity: 0.8 });
+            const colors = { g: '#22c55e', y: '#eab308', r: '#ef4444' };
+            const color = colors[response.color];
+            const exactComarca = response.comarca;
+            
+            geoLayer.eachLayer(layer => {
+              if (layer.feature.properties.NOMCOMAR.toLowerCase() === exactComarca.toLowerCase()) {
+                layer.setStyle({ color: color, fillColor: color, fillOpacity: 0.8 });
               }
             });
-            }
-            else if (response.color === 'y'){
-              geoLayer.eachLayer(layer => {
-              if (layer.feature.properties.NOMCOMAR === input) {
-                layer.setStyle({ color: "yellow", fillColor: "yellow", fillOpacity: 0.8 });
-              }
-            });
-            } else {
-              geoLayer.eachLayer(layer => {
-              if (layer.feature.properties.NOMCOMAR === input) {
-                layer.setStyle({ color: "red", fillColor: "red", fillOpacity: 0.8 });
-              }
-            });
-            }
+            
+            addGuessToHistory(exactComarca, color);
             
             if (response.finalitzat) {
-                document.getElementById('turnCounter').textContent = `Has guanyat! 🎉`
-          
-                const jsConfetti = new JSConfetti();
-                jsConfetti.addConfetti({
-                    confettiColors: ['#fcdd09', '#fcdd11', '#da121a'],
-                    confettiRadius: 8,
-                })
+              document.getElementById('turnCounter').textContent = `Has guanyat! 🎉`;
+              const jsConfetti = new JSConfetti();
+              jsConfetti.addConfetti({
+                confettiColors: ['#fcdd09', '#fcdd11', '#fcdd14', '#da121a'],
+                confettiRadius: 8,
+              });
+              comarcaInput.disabled = true;
+              comarcaInput.placeholder = "Ben jugat!";
             }
-            encerts.push(input);
-            torns.push(response.torns)
             
+            encerts.push(exactComarca);
           } else {
             alert(response.message || 'Comarca no vàlida o ja endevinada.');
           }
+          
+          comarcaInput.value = '';
+          selectedSuggestionIndex = -1;
+          suggestionsList.style.display = 'none';
         });
-}
-  </script>
+    }
+</script>
 </body>
 </html>
