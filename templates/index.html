@@ -18,9 +18,9 @@
       padding: 20px;
     }
     
-    #map { 
-      width: 100%;
-      height: 70vh;
+    #map {
+      width: 70vh; /* Amplada del mapa igual a l'alçada */
+      height: 70vh; /* Alçada fixa en funció de l'amplada */
       margin: 20px auto;
       border-radius: 12px;
       box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
@@ -116,7 +116,7 @@
     const guessesContainer = document.getElementById('guesses');
 
     const map = L.map('map').setView([41.8, 1.8], 7);
-    L.tileLayer('https://maps.geoapify.com/v1/tile/dark-matter/{z}/{x}/{y}.png', { minZoom: 6.5, maxZoom: 8.5 }).addTo(map);
+    L.tileLayer('https://maps.geoapify.com/v1/tile/dark-matter/{z}/{x}/{y}.png', { minZoom: 8, maxZoom: 10 }).addTo(map);
 
     fetch('/init')
       .then(res => res.json())
@@ -137,6 +137,13 @@
             layer.bindPopup(feature.properties.NOMCOMAR);
           },
         }).addTo(map);
+
+        // Ajusta el mapa als límits del GeoJSON
+        const bounds = geoLayer.getBounds();
+        map.fitBounds(bounds);
+
+        // Opcional: Restringeix el moviment del mapa als límits
+        map.setMaxBounds(bounds);
 
         geoLayer.eachLayer(layer => {
           const comarca = layer.feature.properties.NOMCOMAR;
