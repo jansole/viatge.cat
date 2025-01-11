@@ -5,8 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>viatge.cat 🗺</title>
   <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
   <style>
     body { 
@@ -16,24 +14,71 @@
       color: white;
       margin: 0;
       padding: 20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
     
-    #map { 
+    .content-wrapper {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
       width: 100%;
-      height: 70vh;
-      margin: 20px auto;
+      padding: 20px;
+      box-sizing: border-box;
+      gap: 10px; /* Consistent spacing between main elements */
+    }
+
+    h1 {
+      margin: 0;
+      padding: 0;
+    }
+
+    .map-container {
+      width: 100%;
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0; /* Remove margins as we're using gap */
+      overflow: hidden; /* Ensure the map doesn't get clipped */
+      max-height: 80vh; /* Set maximum height relative to the viewport */
+    }
+
+    #map-svg {
+      width: auto; /* Preserve aspect ratio */
+      height: auto; /* Preserve aspect ratio */
+      max-width: 75%; /* Prevent the map from being too wide */
+      max-height: 75%; /* Prevent the map from exceeding container height */
       border-radius: 12px;
       box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+      object-fit: contain; /* Maintain aspect ratio */
+    }
+
+    .controls-container {
+      position: relative;
+      z-index: 10;
+      padding: 20px;
+      background: #0f172a;
+      border-top: 1px solid #334155;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: auto; /* Push to bottom */
     }
     
     .input-container {
       max-width: 500px;
-      margin: 20px auto;
+      margin: 0 auto;
       position: relative;
+      width: 100%;
     }
     
     #comarcaInput {
-      width: 100%;
+      width: calc(100% - 24px);
       padding: 12px 16px;
       border: 1px solid #334155;
       border-radius: 8px;
@@ -58,8 +103,9 @@
       max-height: 200px;
       overflow-y: auto;
       position: absolute;
-      width: 100%;
+      width: calc(100% - 2px);
       z-index: 1000;
+      box-sizing: border-box;
     }
     
     #suggestionsList li {
@@ -93,20 +139,65 @@
       font-size: 14px;
       color: #94a3b8;
     }
+
+    path {
+      stroke: lightgray;
+      fill: transparent;
+      transition: fill 0.3s ease;
+    }
+
+    path:hover {
+      fill: rgba(255, 255, 255, 0.1);
+    }
+
+    .borders-hidden path {
+      stroke: transparent;
+    }
+
+    .toggle-borders {
+      padding: 8px 16px;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      color: white;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 10px;
+    }
+
+    .toggle-borders:hover {
+      background: #334155;
+    }
+
+    .toggle-borders.active {
+      background: #3b82f6;
+      border-color: #3b82f6;
+    }
+
+    .toggle-borders:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
   </style>
 </head>
 <body>
-  <h1></h1>
-  <div id="map"></div>
-  <div class="input-container">
-    <input type="text" id="comarcaInput" placeholder="Introdueix una comarca..." autocomplete="off" />
-    <ul id="suggestionsList" style="display: none;"></ul>
-    <div id="guesses" class="guesses-container"></div>
-    <span id="turnCounter"></span>
+  <div class="content-wrapper">
+    <h1></h1>
+    <div class="map-container">
+      {{ svg_content|safe }}
+    </div>
+    <div class="controls-container">
+      <div class="input-container">
+        <input type="text" id="comarcaInput" placeholder="Introdueix una comarca..." autocomplete="off" />
+        <ul id="suggestionsList" style="display: none;"></ul>
+        <div id="guesses" class="guesses-container"></div>
+        <span id="turnCounter"></span>
+        <button class="toggle-borders">Mostrar fronteres</button>
+      </div>
+    </div>
   </div>
 
   <script>
-    let geoLayer;
     let encerts = [];
     let torns = 0;
     let tornsTotals = 0;
@@ -114,34 +205,23 @@
     const comarcaInput = document.getElementById('comarcaInput');
     const suggestionsList = document.getElementById('suggestionsList');
     const guessesContainer = document.getElementById('guesses');
-
-    const map = L.map('map').setView([41.8, 1.8], 7);
-    L.tileLayer('https://maps.geoapify.com/v1/tile/dark-matter/{z}/{x}/{y}.png', { minZoom: 6.5, maxZoom: 8.5 }).addTo(map);
+    const mapContainer = document.querySelector('.map-container');
+    const toggleButton = document.querySelector('.toggle-borders');
+    let bordersVisible = true;
 
     fetch('/init')
       .then(res => res.json())
       .then(data => {
-        const geojson = data.geojson;
         torns = data.torns;
         tornsTotals = data.torns_totals;
         document.querySelector('h1').textContent = `Vull anar des de ${data.inici} fins a ${data.desti}...`;
         document.getElementById('turnCounter').textContent = `Torns: ${torns}/${tornsTotals}`;
         
-        geoLayer = L.geoJSON(geojson, {
-          style: feature => ({
-            color: "lightgray",
-            fillColor: "lightgray",
-            fillOpacity: 0,
-          }),
-          onEachFeature: (feature, layer) => {
-            layer.bindPopup(feature.properties.NOMCOMAR);
-          },
-        }).addTo(map);
-
-        geoLayer.eachLayer(layer => {
-          const comarca = layer.feature.properties.NOMCOMAR;
-          if ([data.inici, data.desti].includes(comarca)) {
-            layer.setStyle({ color: "blue", fillColor: "blue", fillOpacity: 0.8 });
+        [data.inici, data.desti].forEach(comarca => {
+          const path = document.querySelector(`path[data-comarca="${comarca}"]`);
+          if (path) {
+            path.style.fill = 'blue';
+            path.style.fillOpacity = '0.8';
             addGuessToHistory(comarca, 'blue');
           }
         });
@@ -238,11 +318,11 @@
             const color = colors[response.color];
             const exactComarca = response.comarca;
             
-            geoLayer.eachLayer(layer => {
-              if (layer.feature.properties.NOMCOMAR.toLowerCase() === exactComarca.toLowerCase()) {
-                layer.setStyle({ color: color, fillColor: color, fillOpacity: 0.8 });
-              }
-            });
+            const path = document.querySelector(`path[data-comarca="${exactComarca}"]`);
+            if (path) {
+              path.style.fill = color;
+              path.style.fillOpacity = '0.8';
+            }
             
             addGuessToHistory(exactComarca, color);
             
@@ -255,6 +335,13 @@
               });
               comarcaInput.disabled = true;
               comarcaInput.placeholder = "Ben jugat!";
+              
+              // Force show borders and disable toggle
+              mapContainer.classList.remove('borders-hidden');
+              toggleButton.classList.remove('active');
+              toggleButton.textContent = 'Mostrar fronteres';
+              toggleButton.disabled = true;
+              bordersVisible = true;
             }
             
             encerts.push(exactComarca);
@@ -267,6 +354,13 @@
           suggestionsList.style.display = 'none';
         });
     }
-</script>
+
+    toggleButton.addEventListener('click', () => {
+      bordersVisible = !bordersVisible;
+      mapContainer.classList.toggle('borders-hidden');
+      toggleButton.classList.toggle('active');
+      toggleButton.textContent = bordersVisible ? 'Amagar fronteres' : 'Mostrar fronteres';
+    });
+  </script>
 </body>
 </html>

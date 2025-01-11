@@ -8,8 +8,12 @@ from fuzzywuzzy import process
 
 app = Flask(__name__)
 
-with open('./fitxers/divisions-administratives-v2r1-comarques-250000-20240705.json', 'r', encoding='utf-8') as f:
-    data = json.load(f)
+# Convert GeoJSON to SVG (assuming this is already done)
+fj.convert_geojson_to_svg('./fitxers/divisions-administratives-v2r1-comarques-250000-20240705.json', './static/comarques.svg')
+
+# Read the SVG file
+with open('./static/comarques.svg', 'r', encoding='utf-8') as f:
+    svg_content = f.read()
 
 K = 1.33
 G = nx.read_graphml('./grafs/comarques.graphml')
@@ -25,14 +29,13 @@ torns = 0
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', svg_content=svg_content)
 
 @app.route('/init')
 def init():
     return jsonify({
         "inici": inici,
         "desti": desti,
-        "geojson": data,
         "torns_totals": torns_totals,
         "torns": torns,
         "comarques": comarques
@@ -68,7 +71,7 @@ def guess():
                     "minim_torns": minim_torns - 2,
                     "torns_totals": torns_totals,
                     "color": color,
-                    "comarca": comarca  # Return exact comarca name
+                    "comarca": comarca
                 })
             
             return jsonify({
@@ -77,7 +80,7 @@ def guess():
                 "torns": torns,
                 "torns_totals": torns_totals,
                 "color": color,
-                "comarca": comarca  # Return exact comarca name
+                "comarca": comarca
             })
 
 if __name__ == '__main__':
