@@ -1,0 +1,27 @@
+name: Deploy Flask App to EC2
+
+on:
+  push:
+    branches:
+      - main  # Només es desplegarà si fem un push a 'main'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy to EC2 via SSH
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd ~/viatge_app
+            git pull origin main  # Assegura't que estem en 'main'
+            source venv/bin/activate
+            pip install -r requirements.txt
+            sudo systemctl restart viatge.service
