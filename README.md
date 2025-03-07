@@ -12,4 +12,4 @@ Calculades amb els jsons de https://www.icgc.cat/ca/Geoinformacio-i-mapes/Dades-
 ## 🔎 Visualització del graf
 ![Logo](assets/catalunya_graf.png)
 **- Nombre de municipis detectats:** 947
-**- Nombre d'arestes (fronteres):** 2783
+**- Nombre d'arestes (fronteres):** 2783 (+1 per connectar Puigcerdà amb Llívia)
